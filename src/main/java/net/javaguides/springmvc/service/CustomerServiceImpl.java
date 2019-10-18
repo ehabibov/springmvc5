@@ -32,12 +32,30 @@ public class CustomerServiceImpl implements CustomerService {
 	@Transactional
 	public Customer getCustomer(int id) throws ResourceNotFoundException {
 		return customerRepository.findById(id).orElseThrow(
-				() -> new ResourceNotFoundException(id));
+				() -> new ResourceNotFoundException(
+						String.format("Customer with ID %s not exists", id))
+		);
 	}
 
 	@Override
 	@Transactional
-	public void deleteCustomer(int theId) {
+	public void updateCustomer(Customer customer) throws ResourceNotFoundException {
+		if (customerRepository.existsById(customer.getId())){
+			customerRepository.save(customer);
+		} else {
+			throw new ResourceNotFoundException(
+					String.format("Customer with ID %s not exists", customer.getId())
+			);
+		}
+	}
+
+	@Override
+	@Transactional
+	public void deleteCustomer(int theId) throws ResourceNotFoundException{
+		customerRepository.findById(theId).orElseThrow(
+				() -> new ResourceNotFoundException(
+						String.format("Customer with ID %s not exists", theId))
+		);
 		customerRepository.deleteById(theId);
 	}
 }

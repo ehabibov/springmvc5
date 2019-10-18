@@ -14,5 +14,7 @@ public interface CustomerService {
 	Customer getCustomer(int theId) throws ResourceNotFoundException;
 
 	void deleteCustomer(int theId) throws ResourceNotFoundException;
-	
+
+	void updateCustomer(Customer theCustomer) throws ResourceNotFoundException;
+
 }
